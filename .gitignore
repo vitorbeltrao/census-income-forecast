@@ -130,3 +130,5 @@ dmypy.json
 
 # extra files
 wandb/
+*.csv
+artifacts/
