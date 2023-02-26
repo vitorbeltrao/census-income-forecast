@@ -51,6 +51,20 @@ def go(config: DictConfig):
                 },
             )
 
+        if 'transform_raw_data' in active_steps:
+            _ = mlflow.run(
+                f"{config['main']['components_repository']}/02_transform_raw_data",
+                'main',
+                version='main',
+                parameters={
+                    'input_artifact': config['02_transform_raw_data']['input_artifact'],
+                    'test_size': config['02_transform_raw_data']['test_size'],
+                    'random_seed': config['02_transform_raw_data']['random_seed'],
+                    'stratify_by': config['02_transform_raw_data']['stratify_by'],
+                    'artifact_description': 'Raw dataset transformed with some necessary functions and then divided between training and testing to start the data science pipeline'
+                },
+            )
+
 
 
 

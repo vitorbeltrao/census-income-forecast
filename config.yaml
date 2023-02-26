@@ -6,3 +6,9 @@ main:
 
 01_upload_raw_data:
   input_uri: "https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data"
+
+02_transform_raw_data:
+  input_artifact: "vitorabdo/census-income-forecast/raw_data:latest"
+  test_size: 0.2
+  random_seed: 42
+  stratify_by: "none"
