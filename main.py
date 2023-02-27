@@ -65,6 +65,21 @@ def go(config: DictConfig):
                 },
             )
 
+        if 'basic_clean' in active_steps:
+            _ = mlflow.run(
+                f"{config['main']['components_repository']}/04_basic_clean",
+                'main',
+                version='main',
+                parameters={
+                    'input_artifact': config['04_basic_clean']['input_artifact'],
+                    'artifact_name': 'clean_data',
+                    'artifact_type': 'dataset',
+                    'artifact_description': 'Clean dataset after we apply "clean_data" function',
+                    'min_price': config['04_basic_clean']['race'],
+                },
+            )
+
+
 
 
 
