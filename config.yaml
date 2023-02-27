@@ -16,3 +16,6 @@ main:
 04_basic_clean:
   input_artifact: "vitorabdo/census-income-forecast/train_set:latest"
   race: "Other"
+
+05_data_check:
+  csv: "vitorabdo/census-income-forecast/clean_data:latest"

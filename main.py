@@ -79,6 +79,16 @@ def go(config: DictConfig):
                 },
             )
 
+        if 'data_check' in active_steps:
+            _ = mlflow.run(
+                f"{config['main']['components_repository']}/05_data_check",
+                'main',
+                version='main',
+                parameters={
+                    'csv': config['05_data_check']['csv'],
+                },
+            )
+
 
 
 
