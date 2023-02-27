@@ -1,0 +1,23 @@
+name: clean_data
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    parameters:
+      input_artifact:
+        description: String referring to the W&B directory where the csv with the train set to be transformed is located.
+        type: str
+      artifact_name:
+        description: A human-readable name for this artifact which is how you can identify this artifact.
+        type: str
+      artifact_type:
+        description: The type of the artifact, which is used to organize and differentiate artifacts.
+        type: str
+      artifact_description:
+        description: Free text that offers a description of the artifact.
+        type: str
+      race:
+        description: Category of variable "race" that we dont want to keep in the dataset.
+        type: str
+  
+    command: "python transform_raw_data.py {input_artifact} {artifact_name} {artifact_type}"
