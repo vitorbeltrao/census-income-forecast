@@ -42,7 +42,7 @@ def transform_raw_data(args) -> None:
     )
 
     # transform the string label to bool
-    df['income'] = df['income'].apply(lambda val: 0 if val == "<=50K" else 1)
+    df_raw['income'] = df_raw['income'].apply(lambda val: 0 if val == "<=50K" else 1)
 
     # divide the dataset into train and test
     train_set, test_set = train_test_split(
