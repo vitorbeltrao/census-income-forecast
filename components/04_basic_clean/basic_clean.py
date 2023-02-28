@@ -85,7 +85,7 @@ if __name__ == "__main__":
         type=str,
         help='Category of variable "race" that we dont want to keep in the dataset.',
         required=False,
-        default='Other')
+        default=' Other')
 
     args = parser.parse_args()
     clean_data(args)

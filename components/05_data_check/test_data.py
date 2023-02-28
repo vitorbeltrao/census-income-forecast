@@ -27,7 +27,7 @@ def test_race_names(data):
    '''Tests if the categories of variable "neighbourhood_group" 
    are the same
    '''
-   known_names = ["White", "Black", "Asian-Pac-Islander", "Amer-Indian-Eskimo"]
+   known_names = [" White", " Black", " Asian-Pac-Islander", " Amer-Indian-Eskimo"]
 
    neigh = set(data['race'].unique())
 
