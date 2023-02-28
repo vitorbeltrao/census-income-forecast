@@ -19,3 +19,11 @@ main:
 
 05_data_check:
   csv: "vitorabdo/census-income-forecast/clean_data:latest"
+
+06_train_model:
+  input_artifact: "vitorabdo/census-income-forecast/clean_data:latest"
+  cv: 5
+  scoring: "f1"
+  random_forest:
+    n_estimators: 50
+    max_depth: 10
