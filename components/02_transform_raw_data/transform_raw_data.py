@@ -32,7 +32,7 @@ def transform_raw_data(args) -> None:
     filepath = artifact.file()
     logger.info('Downloaded raw data artifact: SUCCESS')
 
-    # divide the dataset into train and test
+    # read the file as a pandas dataframe
     df_raw = pd.read_csv(
         filepath,
         names = [
@@ -40,6 +40,11 @@ def transform_raw_data(args) -> None:
         'occupation', 'relationship', 'race', 'sex', 'capital-gain', 'capital-loss', 'hours-per-week',
         'native-country', 'income']
     )
+
+    # transform the string label to bool
+    df['income'] = df['income'].apply(lambda val: 0 if val == "<=50K" else 1)
+
+    # divide the dataset into train and test
     train_set, test_set = train_test_split(
         df_raw,
         test_size=args.test_size,
