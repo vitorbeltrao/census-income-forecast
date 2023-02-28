@@ -33,8 +33,7 @@ def clean_data(args) -> None:
 
     # clean the train dataset
     df_raw = pd.read_csv(filepath)
-    df_clean = df_raw.loc[
-        (df_raw['race'] != args.race)]
+    df_clean = df_raw.copy()
     logger.info('Train dataset are clean: SUCCESS')
 
     # upload to W&B

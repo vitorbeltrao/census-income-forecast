@@ -50,11 +50,11 @@ def test_model(args):
 
     # scoring the results
     logger.info("Scoring...")
-    f1_score = f1_score(y_test, y_pred)
-    logger.info(f"Test_f1: {f1_score}")
+    f1score = f1_score(y_test, y_pred)
+    logger.info(f"Test_f1: {f1score}")
 
     # lets save and upload all metrics to wandb
-    run.summary['Test_f1'] = f1_score
+    run.summary['Test_f1'] = f1score
 
 if __name__ == "__main__":
     logging.info('About to start executing the test_model function')
