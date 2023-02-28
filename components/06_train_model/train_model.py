@@ -65,7 +65,7 @@ def get_inference_pipeline() -> Pipeline:
     final_model = Pipeline(
         steps=[
             ('preprocessor', preprocessor),
-            ('scaling', StandardScaler()),
+            ('scaling', StandardScaler(with_mean=False)),
             ('rf', RandomForestClassifier(random_state=42))
         ]
     )
