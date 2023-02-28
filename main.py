@@ -112,12 +112,17 @@ def go(config: DictConfig):
                 },
             )
 
+        if 'test_model' in active_steps:
+            _ = mlflow.run(
+                f"{config['main']['components_repository']}/07_test_model",
+                'main',
+                version='main',
+                parameters={
+                    'mlflow_model': config['07_test_model']['mlflow_model'],
+                    'test_data': config['07_test_model']['test_data']
+                },
+            )
 
 
-
-
-
-
-            
 if __name__ == "__main__":
     go()

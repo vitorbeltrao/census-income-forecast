@@ -27,3 +27,7 @@ main:
   random_forest:
     n_estimators: 50
     max_depth: 10
+
+07_test_model:
+  mlflow_model: "vitorabdo/census-income-forecast/final_model_pipe:prod"
+  test_data: "vitorabdo/census-income-forecast/test_set:latest"
