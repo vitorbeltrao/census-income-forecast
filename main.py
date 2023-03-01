@@ -119,7 +119,10 @@ def go(config: DictConfig):
                 version='main',
                 parameters={
                     'mlflow_model': config['07_test_model']['mlflow_model'],
-                    'test_data': config['07_test_model']['test_data']
+                    'test_data': config['07_test_model']['test_data'],
+                    'artifact_name': 'aequitas_data',
+                    'artifact_type': 'dataset',
+                    'artifact_description': 'Final dataset for us to use with aequitas'
                 },
             )
 

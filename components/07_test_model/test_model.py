@@ -55,6 +55,23 @@ def test_model(args):
 
     # lets save and upload all metrics to wandb
     run.summary['Test_f1'] = f1score
+    logger.info('Metric Uploaded: SUCCESS')
+
+    # create a dataframe to use after to computes model metrics on slices of the data
+    df_aq = test_data.copy()
+    df_aq.rename(columns={'income': 'label_value'}, inplace=True) # real label
+    df_aq['score'] = y_pred # prediction
+
+    # upload to W&B
+    artifact = wandb.Artifact(
+        name=args.artifact_name,
+        type=args.artifact_type,
+        description=args.artifact_description)
+
+    df_aq.to_csv('df_aq.csv', index=False)
+    artifact.add_file('df_aq.csv')
+    run.log_artifact(artifact)
+    logger.info('Artifact Uploaded: SUCCESS')
 
 if __name__ == "__main__":
     logging.info('About to start executing the test_model function')
@@ -73,6 +90,25 @@ if __name__ == "__main__":
         type=str,
         help='String referring to the W&B directory where the csv with the test dataset to be tested is located.',
         required=True)
+    
+    parser.add_argument(
+        '--artifact_name',
+        type=str,
+        help='A human-readable name for this artifact which is how you can identify this artifact.',
+        required=True)
+    
+    parser.add_argument(
+        '--artifact_type',
+        type=str,
+        help='The type of the artifact, which is used to organize and differentiate artifacts.',
+        required=True)
+    
+    parser.add_argument(
+        '--artifact_description',
+        type=str,
+        help='Free text that offers a description of the artifact.',
+        required=False,
+        default='Final dataset for us to use with aequitas')
 
     args = parser.parse_args()
     test_model(args)

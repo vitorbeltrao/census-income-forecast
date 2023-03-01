@@ -10,5 +10,14 @@ entry_points:
       test_data:
         description: String referring to the W&B directory where the csv with the test dataset to be tested is located.
         type: int
+      artifact_name:
+        description: A human-readable name for this artifact which is how you can identify this artifact.
+        type: str
+      artifact_type:
+        description: The type of the artifact, which is used to organize and differentiate artifacts.
+        type: str
+      artifact_description:
+        description: Free text that offers a description of the artifact.
+        type: str
 
-    command: "python test_model.py {mlflow_model} {test_data}"
+    command: "python test_model.py {mlflow_model} {test_data} {artifact_name} {artifact_type}"
