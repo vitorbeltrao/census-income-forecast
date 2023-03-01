@@ -10,6 +10,7 @@ import wandb
 import mlflow
 import pandas as pd
 import numpy as np
+import sys
 
 from sklearn.metrics import f1_score
 
@@ -56,6 +57,17 @@ def test_model(args):
     # lets save and upload all metrics to wandb
     run.summary['Test_f1'] = f1score
     logger.info('Metric Uploaded: SUCCESS')
+
+    # lets see some metrics in our data sliced by sex
+    filename = open('slice_output','w')
+    sys.stdout = filename
+    print('F1 score on sex slices:')
+    row_slice = X_test['sex'] == ' Male'
+    print('Male:', f1_score(y_test[row_slice], sk_pipe.predict(X_test[row_slice])))
+
+    row_slice = X_test['sex'] == ' Female'
+    print('Female:', f1_score(y_test[row_slice], sk_pipe.predict(X_test[row_slice])))
+    filename.close()
 
     # create a dataframe to use after to computes model metrics on slices of the data
     df_aq = test_data.copy()
