@@ -13,9 +13,9 @@ def test_column_names(data):
     file, including in the same order
     '''
     expected_colums = [
-       'age', 'workclass', 'fnlwgt', 'education', 'education-num',
-       'marital-status', 'occupation', 'relationship', 'race', 'sex',
-       'capital-gain', 'capital-loss', 'hours-per-week', 'native-country',
+       'age', 'workclass', 'fnlwgt', 'education', 'education_num',
+       'marital_status', 'occupation', 'relationship', 'race', 'sex',
+       'capital_gain', 'capital_loss', 'hours_per_week', 'native_country',
        'income']
 
     these_columns = data.columns.values

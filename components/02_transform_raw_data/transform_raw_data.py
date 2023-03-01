@@ -36,9 +36,9 @@ def transform_raw_data(args) -> None:
     df_raw = pd.read_csv(
         filepath,
         names = [
-        'age', 'workclass', 'fnlwgt', 'education', 'education-num', 'marital-status',
-        'occupation', 'relationship', 'race', 'sex', 'capital-gain', 'capital-loss', 'hours-per-week',
-        'native-country', 'income']
+        'age', 'workclass', 'fnlwgt', 'education', 'education_num', 'marital_status',
+        'occupation', 'relationship', 'race', 'sex', 'capital_gain', 'capital_loss', 'hours_per_week',
+        'native_country', 'income']
     )
 
     # transform the string label to bool

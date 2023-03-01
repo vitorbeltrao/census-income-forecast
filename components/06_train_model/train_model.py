@@ -37,13 +37,13 @@ def get_inference_pipeline() -> Pipeline:
     # preprocessing step
     # categorical values
     non_ordinal_categorical = [
-        'workclass', 'education', 'marital-status', 'occupation',
+        'workclass', 'education', 'marital_status', 'occupation',
         'relationship', 'race', 'sex']
 
     # numerical values
     zero_imputed = [
-        'age', 'fnlwgt', 'education-num', 'capital-gain', 'capital-loss',
-        'hours-per-week']
+        'age', 'fnlwgt', 'education_num', 'capital_gain', 'capital_loss',
+        'hours_per_week']
 
     # categorical preprocessing
     non_ordinal_categorical_preproc = make_pipeline(
