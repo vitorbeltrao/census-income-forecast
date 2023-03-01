@@ -7,11 +7,11 @@ this file is for creating our inference api with fastapi
 # Import necessary packages
 from fastapi import FastAPI
 from pydantic import BaseModel
-import pickle
 import json
 import wandb
 import logging
 import mlflow
+import pandas as pd
 
 # basic logs config
 logging.basicConfig(
@@ -39,7 +39,7 @@ class model_input(BaseModel):
     capital_gain : int 
     capital_loss : int 
     hours_per_week : int
-    native_country: str
+    # native_country: str
 
 # loading the saved model
 # start a new run at wandb
@@ -56,7 +56,7 @@ logger.info('Downloaded prod mlflow model: SUCCESS')
 
 # creating a POST request to the API
 @app.post('/income_prediction')
-def income_predd(input_parameters : model_input):
+def income_predd(input_parameters: model_input):
     
     input_data = input_parameters.json()
     input_dictionary = json.loads(input_data)
@@ -74,13 +74,15 @@ def income_predd(input_parameters : model_input):
     capital_gain = input_dictionary['capital_gain']
     capital_loss = input_dictionary['capital_loss']
     hours_per_week = input_dictionary['hours_per_week']
-    native_country = input_dictionary['native_country']
+    # native_country = input_dictionary['native_country']
     
     input_list = [
         age, workclass, fnlwgt, education, education_num, marital_status, occupation, 
-        relationship, race, sex, capital_gain, capital_loss, hours_per_week, native_country]
+        relationship, race, sex, capital_gain, capital_loss, hours_per_week]
     
-    prediction = sk_pipe.predict([input_list])
+    input_df = pd.DataFrame([input_list], columns=sk_pipe.named_steps['preprocessor'].transformers_[0][2] + sk_pipe.named_steps['preprocessor'].transformers_[1][2])
+    
+    prediction = sk_pipe.predict([input_df])
     
     if (prediction[0] == 0):
         return 'The person income is less than or equal to 50K'
