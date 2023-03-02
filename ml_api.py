@@ -46,7 +46,7 @@ class model_input(BaseModel):
 run = wandb.init(
     project='census-income-forecast',
     entity='vitorabdo',
-    job_type='test_model')
+    job_type='get_mlflow_model')
 
 # download mlflow model
 model_local_path = run.use_artifact(
