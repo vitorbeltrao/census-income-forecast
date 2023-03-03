@@ -12,6 +12,7 @@
 ## Project Description <a name="Description"></a>
 
 The goal of the project is to create a machine learning model that makes real-time inference of census data. The main idea is to classify whether a person receives a salary greater than 50K or less than or equal to 50K. In this case, the model receives the inputs referring to the characteristics of these people and releases the result classifying in what income range they are.
+***
 
 ## Files Description <a name="files"></a>
 
@@ -28,6 +29,8 @@ In "census-income-forecast" repository we have:
 * **config.yaml**: This is the file where we have the environment variables necessary for the components to work.
 
 * **environment.yaml**: This file is for creating a virtual *conda* environment. It contains all the necessary libraries and their respective versions to be created in this virtual environment.
+
+* **model_card.md file**: Documentation of the created machine learning model.
 ***
 
 ## Running Files <a name="running"></a>
