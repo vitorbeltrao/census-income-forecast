@@ -22,7 +22,7 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 
-def test_model(args):
+def evaluate_model(args):
     '''Function to test the model listed for production on the test dataset'''
     # start a new run at wandb
     run = wandb.init(
@@ -123,5 +123,5 @@ if __name__ == "__main__":
         default='Final dataset for us to use with aequitas')
 
     args = parser.parse_args()
-    test_model(args)
+    evaluate_model(args)
     logging.info('Done executing the test_model function')

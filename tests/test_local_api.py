@@ -48,7 +48,7 @@ def test_inference_class1():
 
     data = json.dumps(sample)
 
-    r = client.post("/inference/", data=data )
+    r = client.post("/inference/", data=data)
 
     # test response and output
     assert r.status_code == 200
