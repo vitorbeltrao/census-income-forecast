@@ -1,5 +1,6 @@
 '''
 Author: Vitor Abdo
+
 This .py file is for creating the fixtures
 '''
 
@@ -8,15 +9,19 @@ import pytest
 import pandas as pd
 import wandb
 
+
 def pytest_addoption(parser):
+    '''parser to let the user input the csv file for fixture'''
     parser.addoption('--csv', action='store')
+
 
 @pytest.fixture(scope='session')
 def data(request):
+    '''fixture to generate data to our tests'''
     run = wandb.init(
         project='census-income-forecast',
         entity='vitorabdo',
-        job_type='data_tests', 
+        job_type='data_tests',
         resume=True)
 
     # Download input artifact. This will also note that this script is using this

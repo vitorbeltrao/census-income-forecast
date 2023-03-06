@@ -6,16 +6,15 @@ get the feature importance for model
 
 # Import necessary packages
 import argparse
-import wandb
 import json
 import logging
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import mlflow
 import os
 import tempfile
 import math
+import mlflow
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
@@ -25,12 +24,15 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 
+import wandb
+
 # basic logs config
 logging.basicConfig(
     level=logging.INFO,
     filemode='w',
     format='%(asctime)-15s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
+
 
 def get_inference_pipeline() -> Pipeline:
     '''function that creates the entire inference pipeline'''
@@ -75,6 +77,7 @@ def get_inference_pipeline() -> Pipeline:
 def plot_feature_importance(pipe, feat_names) -> plt.figure:
     '''Function to generate the graph of the
     most important variables for the model
+
     :param model: (Pipeline)
     The pipeline that made the final model
     :param feat_names: (list)
@@ -246,6 +249,6 @@ if __name__ == "__main__":
         required=False,
         default='Final model pipeline after training, exported in the correct format for making inferences.')
 
-    args = parser.parse_args()
-    train_model(args)
+    arguments = parser.parse_args()
+    train_model(arguments)
     logging.info('Done executing the train_model function')

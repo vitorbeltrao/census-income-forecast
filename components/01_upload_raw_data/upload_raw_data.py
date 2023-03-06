@@ -16,13 +16,16 @@ logging.basicConfig(
     format='%(asctime)-15s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
 
+
 def upload_raw_data(args) -> None:
     '''Function that upload an artifact, in this
     case a raw dataset for weights and biases
     '''
     # start a new run at wandb
     run = wandb.init(
-        project='census-income-forecast', entity='vitorabdo', job_type='upload_raw_data')
+        project='census-income-forecast',
+        entity='vitorabdo',
+        job_type='upload_raw_data')
     logger.info('Creating run for census income forecast: SUCCESS')
 
     artifact = wandb.Artifact(
@@ -67,6 +70,6 @@ if __name__ == "__main__":
         help='Reference denoted by a URI (HTTP, for example) to the artifact.',
         required=True)
 
-    args = parser.parse_args()
-    upload_raw_data(args)
+    arguments = parser.parse_args()
+    upload_raw_data(arguments)
     logging.info('Done executing the upload_raw_data function')

@@ -1,15 +1,16 @@
 '''
 Author: Vitor Abdo
+
 This is the main system file that runs all the necessary
 components to run the machine learning pipeline
 '''
 
 # import necessary packages
-import mlflow
 import tempfile
 import os
 import hydra
 import json
+import mlflow
 from omegaconf import DictConfig
 
 _steps = [
@@ -20,6 +21,7 @@ _steps = [
     'train_model',
     # 'test_model'
 ]
+
 
 @hydra.main(version_base=None, config_path=".", config_name="config")
 def go(config: DictConfig):
@@ -47,8 +49,7 @@ def go(config: DictConfig):
                     'artifact_name': 'raw_data',
                     'artifact_type': 'dataset',
                     'artifact_description': 'Raw dataset used for the project, pulled directly from UCI - Census income',
-                    'input_uri': config['01_upload_raw_data']['input_uri']
-                },
+                    'input_uri': config['01_upload_raw_data']['input_uri']},
             )
 
         if 'transform_raw_data' in active_steps:
@@ -122,8 +123,7 @@ def go(config: DictConfig):
                     'test_data': config['07_test_model']['test_data'],
                     'artifact_name': 'aequitas_data',
                     'artifact_type': 'dataset',
-                    'artifact_description': 'Final dataset for us to use with aequitas'
-                },
+                    'artifact_description': 'Final dataset for us to use with aequitas'},
             )
 
 

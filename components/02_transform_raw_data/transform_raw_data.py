@@ -8,9 +8,9 @@ dataset into train and test set.
 # import necessary packages
 import logging
 import argparse
-import wandb
 import pandas as pd
 from sklearn.model_selection import train_test_split
+import wandb
 
 # basic logs config
 logging.basicConfig(
@@ -18,6 +18,7 @@ logging.basicConfig(
     filemode='w',
     format='%(asctime)-15s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger()
+
 
 def transform_raw_data(args) -> None:
     '''Function that receives the raw data coming from the data source
@@ -35,14 +36,26 @@ def transform_raw_data(args) -> None:
     # read the file as a pandas dataframe
     df_raw = pd.read_csv(
         filepath,
-        names = [
-        'age', 'workclass', 'fnlwgt', 'education', 'education_num', 'marital_status',
-        'occupation', 'relationship', 'race', 'sex', 'capital_gain', 'capital_loss', 'hours_per_week',
-        'native_country', 'income']
-    )
+        names=[
+            'age',
+            'workclass',
+            'fnlwgt',
+            'education',
+            'education_num',
+            'marital_status',
+            'occupation',
+            'relationship',
+            'race',
+            'sex',
+            'capital_gain',
+            'capital_loss',
+            'hours_per_week',
+            'native_country',
+            'income'])
 
     # transform the string label to bool
-    df_raw['income'] = df_raw['income'].apply(lambda val: 0 if val == ' <=50K' else 1)
+    df_raw['income'] = df_raw['income'].apply(
+        lambda val: 0 if val == ' <=50K' else 1)
 
     # divide the dataset into train and test
     train_set, test_set = train_test_split(
@@ -104,8 +117,8 @@ if __name__ == "__main__":
         type=str,
         help='Free text that offers a description of the artifact.',
         required=False,
-        default='Raw dataset transformed with some necessary functions and then divided between training and testing to start the data science pipeline')
+        default='Raw data transformed with necessary funcs divided in train test to start pipeline')
 
-    args = parser.parse_args()
-    transform_raw_data(args)
+    arguments = parser.parse_args()
+    transform_raw_data(arguments)
     logging.info('Done executing the transform_raw_data function')

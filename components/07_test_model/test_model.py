@@ -6,13 +6,13 @@ This file is for testing the final model with the "prod" tag in the test data
 # Import necessary packages
 import argparse
 import logging
-import wandb
-import mlflow
-import pandas as pd
-import numpy as np
 import sys
+import pandas as pd
+import mlflow
 
 from sklearn.metrics import f1_score
+
+import wandb
 
 # basic logs config
 logging.basicConfig(
@@ -59,20 +59,31 @@ def evaluate_model(args):
     logger.info('Metric Uploaded: SUCCESS')
 
     # lets see some metrics in our data sliced by sex
-    filename = open('slice_output','w')
+    filename = open('slice_output', 'w')
     sys.stdout = filename
     print('F1 score on sex slices:')
     row_slice = X_test['sex'] == ' Male'
-    print('Male:', f1_score(y_test[row_slice], sk_pipe.predict(X_test[row_slice])))
+    print(
+        'Male:',
+        f1_score(
+            y_test[row_slice],
+            sk_pipe.predict(
+                X_test[row_slice])))
 
     row_slice = X_test['sex'] == ' Female'
-    print('Female:', f1_score(y_test[row_slice], sk_pipe.predict(X_test[row_slice])))
+    print(
+        'Female:',
+        f1_score(
+            y_test[row_slice],
+            sk_pipe.predict(
+                X_test[row_slice])))
     filename.close()
 
-    # create a dataframe to use after to computes model metrics on slices of the data
+    # create a dataframe to use after to computes model metrics on slices of
+    # the data
     df_aq = test_data.copy()
-    df_aq.rename(columns={'income': 'label_value'}, inplace=True) # real label
-    df_aq['score'] = y_pred # prediction
+    df_aq.rename(columns={'income': 'label_value'}, inplace=True)  # real label
+    df_aq['score'] = y_pred  # prediction
 
     # upload to W&B
     artifact = wandb.Artifact(
@@ -84,6 +95,7 @@ def evaluate_model(args):
     artifact.add_file('df_aq.csv')
     run.log_artifact(artifact)
     logger.info('Artifact Uploaded: SUCCESS')
+
 
 if __name__ == "__main__":
     logging.info('About to start executing the test_model function')
@@ -102,19 +114,19 @@ if __name__ == "__main__":
         type=str,
         help='String referring to the W&B directory where the csv with the test dataset to be tested is located.',
         required=True)
-    
+
     parser.add_argument(
         '--artifact_name',
         type=str,
         help='A human-readable name for this artifact which is how you can identify this artifact.',
         required=True)
-    
+
     parser.add_argument(
         '--artifact_type',
         type=str,
         help='The type of the artifact, which is used to organize and differentiate artifacts.',
         required=True)
-    
+
     parser.add_argument(
         '--artifact_description',
         type=str,
@@ -122,6 +134,6 @@ if __name__ == "__main__":
         required=False,
         default='Final dataset for us to use with aequitas')
 
-    args = parser.parse_args()
-    evaluate_model(args)
+    arguments = parser.parse_args()
+    evaluate_model(arguments)
     logging.info('Done executing the test_model function')

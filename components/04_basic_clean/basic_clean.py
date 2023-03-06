@@ -7,8 +7,8 @@ for example removing outliers.
 # import necessary packages
 import logging
 import argparse
-import wandb
 import pandas as pd
+import wandb
 
 # basic logs config
 logging.basicConfig(
@@ -86,6 +86,6 @@ if __name__ == "__main__":
         required=False,
         default=' Other')
 
-    args = parser.parse_args()
-    clean_data(args)
+    arguments = parser.parse_args()
+    clean_data(arguments)
     logging.info('Done executing the clean_data function')
