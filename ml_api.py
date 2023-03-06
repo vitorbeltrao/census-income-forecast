@@ -56,9 +56,9 @@ wandb.finish()
 logger.info('Downloaded prod mlflow model: SUCCESS')
 
 # creating a GET request to the API
-@app.get("/")
+@app.get('/')
 def greetings():
-    return "Welcome to our model API"
+    return 'Welcome to our model API'
 
 # creating a POST request to the API
 @app.post('/income_prediction')
