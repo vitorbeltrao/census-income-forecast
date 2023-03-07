@@ -36,4 +36,5 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest
+        wandb login 'abe5457aef8a0cb15938e2193fc833df96c56ea9'
+        pytest tests
