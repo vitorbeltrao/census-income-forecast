@@ -12,12 +12,6 @@ on:
 permissions:
   contents: read
   
-    - name: Set up WandB API key
-      run: |
-        wandb login <your_api_key>
-      shell: bash
-
-
 jobs:
   build:
 
