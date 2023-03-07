@@ -103,8 +103,7 @@ We can directly use the existing pipeline to do the training process without the
 
 ## Using the API <a name="api"></a>
 
-
-
+To use the app follow the [link](https://census-income-forecast.herokuapp.com/)
 ***
 
 ## Licensing and Author <a name="licensingandauthors"></a>
