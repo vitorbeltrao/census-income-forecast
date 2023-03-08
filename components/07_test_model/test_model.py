@@ -61,26 +61,23 @@ def evaluate_model(args):
     # lets see some metrics in our data sliced by sex
     filename = open('slice_output', 'w')
     sys.stdout = filename
-    print('F1 score on sex slices:')
-    row_slice = X_test['sex'] == ' Male'
-    print(
-        'Male:',
-        f1_score(
-            y_test[row_slice],
-            sk_pipe.predict(
-                X_test[row_slice])))
 
-    row_slice = X_test['sex'] == ' Female'
-    print(
-        'Female:',
-        f1_score(
-            y_test[row_slice],
-            sk_pipe.predict(
-                X_test[row_slice])))
+    # sliced data for categorical values
+    for columns in X_test[['workclass', 'education', 'education_num', 'marital_status', 'occupation', 'relationship', 'race', 'sex']]:
+        print(f'\nF1 score on {columns} slices:')
+        slice_options = X_test[columns].unique().tolist()
+        for option in slice_options:
+            row_slice = X_test[columns] == option
+            print(
+                f'{option}',
+                f1_score(
+                    y_test[row_slice],
+                    sk_pipe.predict(
+                        X_test[row_slice])))
+
     filename.close()
 
-    # create a dataframe to use after to computes model metrics on slices of
-    # the data
+    # create a dataframe to use for fairness
     df_aq = test_data.copy()
     df_aq.rename(columns={'income': 'label_value'}, inplace=True)  # real label
     df_aq['score'] = y_pred  # prediction
@@ -114,7 +111,7 @@ if __name__ == "__main__":
         type=str,
         help='String referring to the W&B directory where the csv with the test dataset to be tested is located.',
         required=True)
-
+    
     parser.add_argument(
         '--artifact_name',
         type=str,

@@ -45,6 +45,8 @@ The data was tested on the remaining 20% ​​of the total dataset, where we ne
 
 See: 
 
+* The mean validation score and mean train score of f1 in train model step is, respectively: (0.6665742296070268, 0.999980061808394)
+
 * [slice_output.txt](https://github.com/vitorbeltrao/census-income-forecast/tree/main/components/07_test_model) file.
 
 ## Ethical Considerations
