@@ -7,7 +7,7 @@ Script to post to FastAPI instance for model inference
 import requests
 import json
 
-url = "https://census-income-fore.onrender.com"
+url = "https://census-income-fore.onrender.com/income_prediction"
 
 # explicit the sample to perform inference on
 sample =  {
