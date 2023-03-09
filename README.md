@@ -103,7 +103,9 @@ We can directly use the existing pipeline to do the training process without the
 
 ## Using the API <a name="api"></a>
 
-To use the app follow the [link](https://census-income-forecast.herokuapp.com/)
+To check the application documentation follow the [link](https://census-income-fore.onrender.com/docs)
+
+The url to the endpoint for making API requests is: https://census-income-fore.onrender.com/income_predictions
 ***
 
 ## Licensing and Author <a name="licensingandauthors"></a>

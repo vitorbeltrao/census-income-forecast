@@ -37,4 +37,4 @@ jobs:
     - name: Test with pytest
       run: |
         wandb login 'abe5457aef8a0cb15938e2193fc833df96c56ea9'
-        pytest . --csv 'vitorabdo/census-income-forecast/clean_data:latest'
+        pytest tests

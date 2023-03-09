@@ -6,13 +6,13 @@ this file is for creating our inference api with fastapi
 
 # Import necessary packages
 import json
-import joblib
+# import joblib
 import logging
-# import mlflow
+import mlflow
 import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel
-# import wandb
+import wandb
 
 # basic logs config
 logging.basicConfig(
@@ -62,24 +62,24 @@ class ModelInput(BaseModel):
                                     }
                         }
 
-# # loading the saved model
-# # start a new run at wandb
-# run = wandb.init(
-#     project='census-income-forecast',
-#     entity='vitorabdo',
-#     job_type='get_mlflow_model')
-
-# # download mlflow model
-# model_local_path = run.use_artifact(
-#     'vitorabdo/census-income-forecast/final_model_pipe:prod',
-#     type='pickle').download()
-# sk_pipe = mlflow.sklearn.load_model(model_local_path)
-# wandb.finish()
-# logger.info('Downloaded prod mlflow model: SUCCESS')
+# loading the saved model
+# start a new run at wandb
+run = wandb.init(
+    project='census-income-forecast',
+    entity='vitorabdo',
+    job_type='get_mlflow_model')
 
 # download mlflow model
-model_local_path = 'model.pkl'
-sk_pipe = joblib.load(model_local_path)
+model_local_path = run.use_artifact(
+    'vitorabdo/census-income-forecast/final_model_pipe:prod',
+    type='pickle').download()
+sk_pipe = mlflow.sklearn.load_model(model_local_path)
+wandb.finish()
+logger.info('Downloaded prod mlflow model: SUCCESS')
+
+# # download mlflow model
+# model_local_path = 'model.pkl'
+# sk_pipe = joblib.load(model_local_path)
 
 
 @app.get('/')
