@@ -16,7 +16,7 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 
-def upload_raw_data(args) -> None:
+def upload_raw_data() -> None:
     '''Function that upload an artifact, in this
     case a raw dataset for weights and biases
     '''
