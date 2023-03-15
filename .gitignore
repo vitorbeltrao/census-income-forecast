@@ -133,3 +133,4 @@ wandb/
 *.csv
 artifacts/
 /notebooks
+/mlruns

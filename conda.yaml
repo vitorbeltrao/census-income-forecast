@@ -10,3 +10,4 @@ dependencies:
   - pip=22.3.1
   - pip:
       - wandb==0.13.10
+      - python-decouple==3.8
