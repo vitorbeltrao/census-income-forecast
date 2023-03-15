@@ -61,7 +61,7 @@ if __name__ == "__main__":
         '--artifact_description',
         type=str,
         help='Free text that offers a description of the artifact.',
-        required=False,
+        required=True,
         default='Raw dataset used for the project, pulled directly from UCI - Census income')
 
     parser.add_argument(
