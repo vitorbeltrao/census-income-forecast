@@ -3,11 +3,4 @@ conda_env: conda.yaml
 
 entry_points:
   main:
-    parameters:
-
-      steps:
-        description: Comma-separated list of steps to execute (useful for debugging)
-        type: str
-        default: all
-
-    command: "python main.py main.steps={steps}"
+    command: "python main.py"

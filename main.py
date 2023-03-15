@@ -5,12 +5,9 @@ components to run the machine learning pipeline
 '''
 
 # import necessary packages
-import tempfile
 import os
-import hydra
-import json
 import mlflow
-from omegaconf import DictConfig
+from decouple import config
 
 _steps = [
     'upload_raw_data',
@@ -21,19 +18,27 @@ _steps = [
     # 'test_model'
 ]
 
+# config
+COMPONENTS_REPOSITORY = config("COMPONENTS_REPOSITORY")
+PROJECT_NAME = config("PROJECT_NAME")
+EXPERIMENT_NAME = config("EXPERIMENT_NAME")
+STEPS = config("STEPS")
 
-@hydra.main(version_base=None, config_path=".", config_name="config")
-def go(config: DictConfig):
+
+INPUT_URI = config("INPUT_URI")
+
+
+def go():
     '''main file that runs the entire pipeline end-to-end using hydra and mlflow
     :param config: (.yaml file)
     file that contains all the default data for the entire machine learning pipeline to run
     '''
     # Setup the wandb experiment. All runs will be grouped under this name
-    os.environ['WANDB_PROJECT'] = config['main']['project_name']
-    os.environ['WANDB_RUN_GROUP'] = config['main']['experiment_name']
+    os.environ['WANDB_PROJECT'] = PROJECT_NAME
+    os.environ['WANDB_RUN_GROUP'] = EXPERIMENT_NAME
 
     # Steps to execute
-    steps_par = config['main']['steps']
+    steps_par = STEPS
     active_steps = steps_par.split(',') if steps_par != 'all' else _steps
 
     # Move to a temporary directory
@@ -43,7 +48,7 @@ def go(config: DictConfig):
             'artifact_name': 'raw_data',
             'artifact_type': 'dataset',
             'artifact_description': 'Raw dataset used for the project, pulled directly from UCI - Census income',
-            'input_uri': config['01_upload_raw_data']['input_uri']}
+            'input_uri': INPUT_URI}
         
         mlflow.run(project_uri, parameters=params)
             
