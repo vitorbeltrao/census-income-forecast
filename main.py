@@ -5,10 +5,8 @@ components to run the machine learning pipeline
 '''
 
 # import necessary packages
-import tempfile
 import os
 import hydra
-import json
 import mlflow
 from omegaconf import DictConfig
 
@@ -39,22 +37,11 @@ def go(config: DictConfig):
     # Move to a temporary directory
     if 'upload_raw_data' in active_steps:
         project_uri = f"{config['main']['components_repository']}/01_upload_raw_data"
-        # params = {"alpha": 0.5, "l1_ratio": 0.01}
         mlflow.run(project_uri)
 
-        # if 'transform_raw_data' in active_steps:
-        #     _ = mlflow.run(
-        #         f"{config['main']['components_repository']}/02_transform_raw_data",
-        #         'main',
-        #         version='main',
-        #         parameters={
-        #             'input_artifact': config['02_transform_raw_data']['input_artifact'],
-        #             'test_size': config['02_transform_raw_data']['test_size'],
-        #             'random_seed': config['02_transform_raw_data']['random_seed'],
-        #             'stratify_by': config['02_transform_raw_data']['stratify_by'],
-        #             'artifact_description': 'Raw dataset transformed with some necessary functions and then divided between training and testing to start the data science pipeline'
-        #         },
-        #     )
+    if 'transform_raw_data' in active_steps:
+        project_uri = f"{config['main']['components_repository']}/02_transform_raw_data"
+        mlflow.run(project_uri)
 
         # if 'basic_clean' in active_steps:
         #     _ = mlflow.run(

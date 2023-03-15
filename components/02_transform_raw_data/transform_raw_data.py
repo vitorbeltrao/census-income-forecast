@@ -7,7 +7,6 @@ dataset into train and test set.
 
 # import necessary packages
 import logging
-import argparse
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import wandb
@@ -20,7 +19,7 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 
-def transform_raw_data(args) -> None:
+def transform_raw_data() -> None:
     '''Function that receives the raw data coming from the data source
     and divide the raw data into train and test set.
     '''
@@ -29,7 +28,7 @@ def transform_raw_data(args) -> None:
         project='census-income-forecast',
         entity='vitorabdo',
         job_type='transform_data')
-    artifact = run.use_artifact(args.input_artifact, type='dataset')
+    artifact = run.use_artifact("vitorabdo/census-income-forecast/raw_data:latest", type='dataset')
     filepath = artifact.file()
     logger.info('Downloaded raw data artifact: SUCCESS')
 
@@ -60,9 +59,8 @@ def transform_raw_data(args) -> None:
     # divide the dataset into train and test
     train_set, test_set = train_test_split(
         df_raw,
-        test_size=args.test_size,
-        random_state=args.random_seed,
-        stratify=df_raw[args.stratify_by] if args.stratify_by != 'none' else None)
+        test_size=0.2,
+        random_state=42)
     logger.info('Splitted raw data into train and test: SUCCESS')
 
     # upload to W&B
@@ -71,7 +69,7 @@ def transform_raw_data(args) -> None:
         artifact = wandb.Artifact(
             name=name,
             type='dataset',
-            description=args.artifact_description)
+            description='Raw dataset transformed with some necessary functions and then divided between training and testing to start the data science pipeline')
 
         df.to_csv(name + '.csv', index=False)
         artifact.add_file(name + '.csv')
@@ -81,44 +79,5 @@ def transform_raw_data(args) -> None:
 
 if __name__ == "__main__":
     logging.info('About to start executing the transform_raw_data function')
-
-    parser = argparse.ArgumentParser(
-        description='Upload an artifact to W&B. Adds a reference denoted by a csv to the artifact.')
-
-    parser.add_argument(
-        '--input_artifact',
-        type=str,
-        help='String referring to the W&B directory where the csv with the raw data to be transformed is located.',
-        required=True)
-
-    parser.add_argument(
-        '--test_size',
-        type=float,
-        help='Size of the test split. Fraction of the dataset, or number of items.',
-        required=False,
-        default=0.2)
-
-    parser.add_argument(
-        '--random_seed',
-        type=int,
-        help='Seed for random number generator.',
-        required=False,
-        default=42)
-
-    parser.add_argument(
-        '--stratify_by',
-        type=str,
-        help='Column to use for stratification.',
-        required=False,
-        default='none')
-
-    parser.add_argument(
-        '--artifact_description',
-        type=str,
-        help='Free text that offers a description of the artifact.',
-        required=False,
-        default='Raw data transformed with necessary funcs divided in train test to start pipeline')
-
-    arguments = parser.parse_args()
-    transform_raw_data(arguments)
+    transform_raw_data()
     logging.info('Done executing the transform_raw_data function')
