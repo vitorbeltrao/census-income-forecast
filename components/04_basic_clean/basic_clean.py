@@ -6,7 +6,6 @@ for example removing outliers.
 
 # import necessary packages
 import logging
-import argparse
 import pandas as pd
 import wandb
 
@@ -18,7 +17,7 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 
-def clean_data(args) -> None:
+def clean_data() -> None:
     '''Function to clean up our training dataset to feed the machine
     learning model.
     '''
@@ -27,7 +26,7 @@ def clean_data(args) -> None:
         project='census-income-forecast',
         entity='vitorabdo',
         job_type='clean_data')
-    artifact = run.use_artifact(args.input_artifact, type='dataset')
+    artifact = run.use_artifact("vitorabdo/census-income-forecast/train_set:latest", type='dataset')
     filepath = artifact.file()
     logger.info('Downloaded raw data artifact: SUCCESS')
 
@@ -38,9 +37,9 @@ def clean_data(args) -> None:
 
     # upload to W&B
     artifact = wandb.Artifact(
-        name=args.artifact_name,
-        type=args.artifact_type,
-        description=args.artifact_description)
+        name='clean_data',
+        type='dataset',
+        description='Clean dataset after we apply "clean_data" function')
 
     df_clean.to_csv('df_clean.csv', index=False)
     artifact.add_file('df_clean.csv')
@@ -50,42 +49,5 @@ def clean_data(args) -> None:
 
 if __name__ == "__main__":
     logging.info('About to start executing the clean_data function')
-
-    parser = argparse.ArgumentParser(
-        description='Upload an artifact to W&B. Adds a reference denoted by a csv to the artifact.')
-
-    parser.add_argument(
-        '--input_artifact',
-        type=str,
-        help='String referring to the W&B directory where the csv with the train set to be transformed is located.',
-        required=True)
-
-    parser.add_argument(
-        '--artifact_name',
-        type=str,
-        help='A human-readable name for this artifact which is how you can identify this artifact.',
-        required=True)
-
-    parser.add_argument(
-        '--artifact_type',
-        type=str,
-        help='The type of the artifact, which is used to organize and differentiate artifacts.',
-        required=True)
-
-    parser.add_argument(
-        '--artifact_description',
-        type=str,
-        help='Free text that offers a description of the artifact.',
-        required=False,
-        default='Clean dataset after we apply "clean_data" function')
-
-    parser.add_argument(
-        '--race',
-        type=str,
-        help='Category of variable "race" that we dont want to keep in the dataset.',
-        required=False,
-        default=' Other')
-
-    arguments = parser.parse_args()
-    clean_data(arguments)
+    clean_data()
     logging.info('Done executing the clean_data function')

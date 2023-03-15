@@ -3,10 +3,5 @@ conda_env: conda.yaml
 
 entry_points:
   main:
-    parameters:
 
-      csv:
-        description: Input CSV file to be tested
-        type: string
-    
-    command: "pytest . -vv --csv {csv}"
+    command: "pytest . -vv"

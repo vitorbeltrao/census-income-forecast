@@ -5,7 +5,6 @@ get the feature importance for model
 '''
 
 # Import necessary packages
-import argparse
 import json
 import logging
 import os
@@ -103,7 +102,7 @@ def plot_feature_importance(pipe, feat_names) -> plt.figure:
     return fig_feat_imp
 
 
-def train_model(args):
+def train_model():
     '''Function to train the model, tune the hyperparameters
     and save the best final model
     '''
@@ -112,13 +111,13 @@ def train_model(args):
         project='census-income-forecast',
         entity='vitorabdo',
         job_type='train_data')
-    artifact = run.use_artifact(args.input_artifact, type='dataset')
+    artifact = run.use_artifact("vitorabdo/census-income-forecast/clean_data:latest", type='dataset')
     filepath = artifact.file()
     logger.info('Downloaded cleaned data artifact: SUCCESS')
 
     # Get the Random Forest configuration and update W&B
     try:
-        with open(args.rf_config) as fp:
+        with open({'n_estimators': 50, 'max_depth': 10}) as fp:
             rf_config = json.load(fp)
         run.config.update(rf_config)
     except BaseException:
@@ -141,8 +140,8 @@ def train_model(args):
     grid_search = GridSearchCV(
         sk_pipe,
         param_grid,
-        cv=args.cv,
-        scoring=args.scoring,
+        cv=5,
+        scoring="f1",
         return_train_score=True)
     grid_search.fit(X, y)
 
@@ -160,7 +159,7 @@ def train_model(args):
                                         reverse=True) if (math.isnan(mean_test_score) != True)]
 
     logger.info(
-        f"The mean val score and mean train score of {args.scoring} is, respectively: {cvres[0]}")
+        f"The mean val score and mean train score of f1 is, respectively: {cvres[0]}")
 
     # exporting the model: save model package in the MLFlow sklearn format
     logger.info('Exporting model')
@@ -175,9 +174,9 @@ def train_model(args):
 
     # upload the model artifact into wandb
     artifact = wandb.Artifact(
-        name=args.artifact_name,
-        type=args.artifact_type,
-        description=args.artifact_description)
+        name='final_model_pipe',
+        type='pickle',
+        description='Final model pipeline after training, exported in the correct format for making inferences')
 
     artifact.add_dir(export_path)
     run.log_artifact(artifact)
@@ -200,55 +199,5 @@ def train_model(args):
 
 if __name__ == "__main__":
     logging.info('About to start executing the train_model function')
-
-    parser = argparse.ArgumentParser(
-        description='Upload an artifact to W&B. Adds a reference denoted by a pkl to the artifact.')
-
-    parser.add_argument(
-        '--input_artifact',
-        type=str,
-        help='String referring to the W&B directory where the csv with the cleaned dataset to be trained is located.',
-        required=True)
-
-    parser.add_argument(
-        '--rf_config',
-        type=str,
-        help='Random forest configuration. A JSON dict that will be passed to the scikit-learn constructor for RandomForestClassifier.',
-        default='{}')
-
-    parser.add_argument(
-        '--cv',
-        type=int,
-        help='The number of folds to apply in cross-validation.',
-        required=False,
-        default=5)
-
-    parser.add_argument(
-        '--scoring',
-        type=str,
-        help='Which metric do you want to test.',
-        required=False,
-        default='f1')
-
-    parser.add_argument(
-        '--artifact_name',
-        type=str,
-        help='A human-readable name for this artifact which is how you can identify this artifact.',
-        required=True)
-
-    parser.add_argument(
-        '--artifact_type',
-        type=str,
-        help='The type of the artifact, which is used to organize and differentiate artifacts.',
-        required=True)
-
-    parser.add_argument(
-        '--artifact_description',
-        type=str,
-        help='Free text that offers a description of the artifact.',
-        required=False,
-        default='Final model pipeline after training, exported in the correct format for making inferences.')
-
-    arguments = parser.parse_args()
-    train_model(arguments)
+    train_model()
     logging.info('Done executing the train_model function')

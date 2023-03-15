@@ -4,7 +4,6 @@ This file is for testing the final model with the "prod" tag in the test data
 '''
 
 # Import necessary packages
-import argparse
 import logging
 import sys
 import pandas as pd
@@ -22,7 +21,7 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 
-def evaluate_model(args):
+def evaluate_model():
     '''Function to test the model listed for production on the test dataset'''
     # start a new run at wandb
     run = wandb.init(
@@ -32,11 +31,11 @@ def evaluate_model(args):
 
     # download mlflow model
     model_local_path = run.use_artifact(
-        args.mlflow_model, type='pickle').download()
+        "vitorabdo/census-income-forecast/final_model_pipe:prod", type='pickle').download()
     logger.info('Downloaded prod mlflow model: SUCCESS')
 
     # download test dataset
-    test_data = run.use_artifact(args.test_data).file()
+    test_data = run.use_artifact("vitorabdo/census-income-forecast/test_set:latest").file()
     logger.info('Downloaded test dataset artifact: SUCCESS')
 
     # Read test dataset
@@ -84,9 +83,9 @@ def evaluate_model(args):
 
     # upload to W&B
     artifact = wandb.Artifact(
-        name=args.artifact_name,
-        type=args.artifact_type,
-        description=args.artifact_description)
+        name='aequitas_data',
+        type='dataset',
+        description='Final dataset for us to use with aequitas')
 
     df_aq.to_csv('df_aq.csv', index=False)
     artifact.add_file('df_aq.csv')
@@ -96,41 +95,5 @@ def evaluate_model(args):
 
 if __name__ == "__main__":
     logging.info('About to start executing the test_model function')
-
-    parser = argparse.ArgumentParser(
-        description='Test the provided model against the test dataset.')
-
-    parser.add_argument(
-        '--mlflow_model',
-        type=str,
-        help='String referring to the W&B directory where the mlflow production model is located.',
-        required=True)
-
-    parser.add_argument(
-        '--test_data',
-        type=str,
-        help='String referring to the W&B directory where the csv with the test dataset to be tested is located.',
-        required=True)
-    
-    parser.add_argument(
-        '--artifact_name',
-        type=str,
-        help='A human-readable name for this artifact which is how you can identify this artifact.',
-        required=True)
-
-    parser.add_argument(
-        '--artifact_type',
-        type=str,
-        help='The type of the artifact, which is used to organize and differentiate artifacts.',
-        required=True)
-
-    parser.add_argument(
-        '--artifact_description',
-        type=str,
-        help='Free text that offers a description of the artifact.',
-        required=False,
-        default='Final dataset for us to use with aequitas')
-
-    arguments = parser.parse_args()
-    evaluate_model(arguments)
+    evaluate_model()
     logging.info('Done executing the test_model function')
