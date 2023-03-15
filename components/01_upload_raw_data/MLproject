@@ -6,15 +6,15 @@ entry_points:
     parameters:
       artifact_name:
         description: A human-readable name for this artifact, which is how you can identify this artifact.
-        type: str
+        type: string
       artifact_type:
         description: The type of the artifact, which is used to organize and differentiate artifacts.
-        type: str
+        type: string
       artifact_description:
         description: Free text that offers a description of the artifact.
-        type: str
+        type: string
       input_uri:
         description: Reference denoted by a URI (HTTP, for example) to the artifact.
-        type: str
+        type: string
 
-    command: "python upload_raw_data.py --artifact_name {artifact_name} --artifact_type {artifact_type} --artifact_description {artifact_description} --input_uri {input_uri}"
+    command: "python upload_raw_data.py {artifact_name} {artifact_type} {artifact_description} {input_uri}"
