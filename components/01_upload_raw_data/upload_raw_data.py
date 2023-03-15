@@ -6,7 +6,6 @@ in W&B extracted from the data source
 
 # import necessary packages
 import logging
-import argparse
 import wandb
 
 # basic logs config
@@ -17,7 +16,7 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 
-def upload_raw_data(args) -> None:
+def upload_raw_data() -> None:
     '''Function that upload an artifact, in this
     case a raw dataset for weights and biases
     '''
@@ -29,11 +28,11 @@ def upload_raw_data(args) -> None:
     logger.info('Creating run for census income forecast: SUCCESS')
 
     artifact = wandb.Artifact(
-        name=args.artifact_name,
-        type=args.artifact_type,
-        description=args.artifact_description
+        name='raw_data',
+        type='dataset',
+        description='Raw dataset used for the project, pulled directly from UCI - Census income'
     )
-    artifact.add_reference(args.input_uri)  # add a HTTP link to the artifact
+    artifact.add_reference('https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data')  # add a HTTP link to the artifact
     # save the artifact version to W&B and mark it as the output of this run
     run.log_artifact(artifact)
     logger.info('artifact uploaded to the wandb: SUCCESS')
@@ -41,35 +40,5 @@ def upload_raw_data(args) -> None:
 
 if __name__ == "__main__":
     logging.info('About to start executing the upload_raw_data function')
-
-    parser = argparse.ArgumentParser(
-        description='Upload an artifact to W&B. Adds a reference denoted by a URI to the artifact.')
-
-    parser.add_argument(
-        '--artifact_name',
-        type=str,
-        help='A human-readable name for this artifact which is how you can identify this artifact.',
-        required=True)
-
-    parser.add_argument(
-        '--artifact_type',
-        type=str,
-        help='The type of the artifact, which is used to organize and differentiate artifacts.',
-        required=True)
-
-    parser.add_argument(
-        '--artifact_description',
-        type=str,
-        help='Free text that offers a description of the artifact.',
-        required=True,
-        default='Raw dataset used for the project, pulled directly from UCI - Census income')
-
-    parser.add_argument(
-        '--input_uri',
-        type=str,
-        help='Reference denoted by a URI (HTTP, for example) to the artifact.',
-        required=True)
-
-    arguments = parser.parse_args()
-    upload_raw_data(arguments)
+    upload_raw_data()
     logging.info('Done executing the upload_raw_data function')
