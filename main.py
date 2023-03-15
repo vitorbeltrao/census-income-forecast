@@ -37,18 +37,10 @@ def go(config: DictConfig):
     active_steps = steps_par.split(',') if steps_par != 'all' else _steps
 
     # Move to a temporary directory
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        if 'upload_raw_data' in active_steps:
-            _ = mlflow.run(
-                f"{config['main']['components_repository']}/01_upload_raw_data",
-                'main',
-                version='main',
-                parameters={
-                    'artifact_name': 'raw_data',
-                    'artifact_type': 'dataset',
-                    'artifact_description': 'Raw dataset used for the project, pulled directly from UCI - Census income',
-                    'input_uri': config['01_upload_raw_data']['input_uri']},
-            )
+    if 'upload_raw_data' in active_steps:
+        project_uri = f"{config['main']['components_repository']}/01_upload_raw_data"
+        # params = {"alpha": 0.5, "l1_ratio": 0.01}
+        mlflow.run(project_uri)
 
         # if 'transform_raw_data' in active_steps:
         #     _ = mlflow.run(
