@@ -43,7 +43,7 @@ def go():
 
     # Move to a temporary directory
     if 'upload_raw_data' in active_steps:
-        project_uri = f"{config['main']['components_repository']}/01_upload_raw_data"
+        project_uri = f"{COMPONENTS_REPOSITORY}/01_upload_raw_data"
         params={
             'artifact_name': 'raw_data',
             'artifact_type': 'dataset',
