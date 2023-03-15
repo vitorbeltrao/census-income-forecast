@@ -39,7 +39,6 @@ def go(config: DictConfig):
     # Move to a temporary directory
     with tempfile.TemporaryDirectory() as tmp_dir:
         if 'upload_raw_data' in active_steps:
-            # Download file from source and load in W&B
             _ = mlflow.run(
                 f"{config['main']['components_repository']}/01_upload_raw_data",
                 'main',
@@ -51,79 +50,79 @@ def go(config: DictConfig):
                     'input_uri': config['01_upload_raw_data']['input_uri']},
             )
 
-        if 'transform_raw_data' in active_steps:
-            _ = mlflow.run(
-                f"{config['main']['components_repository']}/02_transform_raw_data",
-                'main',
-                version='main',
-                parameters={
-                    'input_artifact': config['02_transform_raw_data']['input_artifact'],
-                    'test_size': config['02_transform_raw_data']['test_size'],
-                    'random_seed': config['02_transform_raw_data']['random_seed'],
-                    'stratify_by': config['02_transform_raw_data']['stratify_by'],
-                    'artifact_description': 'Raw dataset transformed with some necessary functions and then divided between training and testing to start the data science pipeline'
-                },
-            )
+        # if 'transform_raw_data' in active_steps:
+        #     _ = mlflow.run(
+        #         f"{config['main']['components_repository']}/02_transform_raw_data",
+        #         'main',
+        #         version='main',
+        #         parameters={
+        #             'input_artifact': config['02_transform_raw_data']['input_artifact'],
+        #             'test_size': config['02_transform_raw_data']['test_size'],
+        #             'random_seed': config['02_transform_raw_data']['random_seed'],
+        #             'stratify_by': config['02_transform_raw_data']['stratify_by'],
+        #             'artifact_description': 'Raw dataset transformed with some necessary functions and then divided between training and testing to start the data science pipeline'
+        #         },
+        #     )
 
-        if 'basic_clean' in active_steps:
-            _ = mlflow.run(
-                f"{config['main']['components_repository']}/04_basic_clean",
-                'main',
-                version='main',
-                parameters={
-                    'input_artifact': config['04_basic_clean']['input_artifact'],
-                    'artifact_name': 'clean_data',
-                    'artifact_type': 'dataset',
-                    'artifact_description': 'Clean dataset after we apply "clean_data" function',
-                    'min_price': config['04_basic_clean']['race'],
-                },
-            )
+        # if 'basic_clean' in active_steps:
+        #     _ = mlflow.run(
+        #         f"{config['main']['components_repository']}/04_basic_clean",
+        #         'main',
+        #         version='main',
+        #         parameters={
+        #             'input_artifact': config['04_basic_clean']['input_artifact'],
+        #             'artifact_name': 'clean_data',
+        #             'artifact_type': 'dataset',
+        #             'artifact_description': 'Clean dataset after we apply "clean_data" function',
+        #             'min_price': config['04_basic_clean']['race'],
+        #         },
+        #     )
 
-        if 'data_check' in active_steps:
-            _ = mlflow.run(
-                f"{config['main']['components_repository']}/05_data_check",
-                'main',
-                version='main',
-                parameters={
-                    'csv': config['05_data_check']['csv'],
-                },
-            )
+        # if 'data_check' in active_steps:
+        #     _ = mlflow.run(
+        #         f"{config['main']['components_repository']}/05_data_check",
+        #         'main',
+        #         version='main',
+        #         parameters={
+        #             'csv': config['05_data_check']['csv'],
+        #         },
+        #     )
 
-        if 'train_model' in active_steps:
-            rf_config = os.path.abspath('rf_config.json')
-            with open(rf_config, 'w+') as fp:
-                json.dump(
-                    dict(
-                        config['06_train_model']['random_forest'].items()),
-                    fp)
+        # if 'train_model' in active_steps:
+        #     rf_config = os.path.abspath('rf_config.json')
+        #     with open(rf_config, 'w+') as fp:
+        #         json.dump(
+        #             dict(
+        #                 config['06_train_model']['random_forest'].items()),
+        #             fp)
 
-            _ = mlflow.run(
-                f"{config['main']['components_repository']}/06_train_model",
-                'main',
-                version='main',
-                parameters={
-                    'input_artifact': config['06_train_model']['input_artifact'],
-                    'rf_config': rf_config,
-                    'cv': config['06_train_model']['cv'],
-                    'scoring': config['06_train_model']['scoring'],
-                    'artifact_name': 'final_model_pipe',
-                    'artifact_type': 'pickle',
-                    'artifact_description': 'Final model pipeline after training, exported in the correct format for making inferences'
-                },
-            )
+        #     _ = mlflow.run(
+        #         f"{config['main']['components_repository']}/06_train_model",
+        #         'main',
+        #         version='main',
+        #         parameters={
+        #             'input_artifact': config['06_train_model']['input_artifact'],
+        #             'rf_config': rf_config,
+        #             'cv': config['06_train_model']['cv'],
+        #             'scoring': config['06_train_model']['scoring'],
+        #             'artifact_name': 'final_model_pipe',
+        #             'artifact_type': 'pickle',
+        #             'artifact_description': 'Final model pipeline after training, exported in the correct format for making inferences'
+        #         },
+        #     )
 
-        if 'test_model' in active_steps:
-            _ = mlflow.run(
-                f"{config['main']['components_repository']}/07_test_model",
-                'main',
-                version='main',
-                parameters={
-                    'mlflow_model': config['07_test_model']['mlflow_model'],
-                    'test_data': config['07_test_model']['test_data'],
-                    'artifact_name': 'aequitas_data',
-                    'artifact_type': 'dataset',
-                    'artifact_description': 'Final dataset for us to use with aequitas'},
-            )
+        # if 'test_model' in active_steps:
+        #     _ = mlflow.run(
+        #         f"{config['main']['components_repository']}/07_test_model",
+        #         'main',
+        #         version='main',
+        #         parameters={
+        #             'mlflow_model': config['07_test_model']['mlflow_model'],
+        #             'test_data': config['07_test_model']['test_data'],
+        #             'artifact_name': 'aequitas_data',
+        #             'artifact_type': 'dataset',
+        #             'artifact_description': 'Final dataset for us to use with aequitas'},
+        #     )
 
 
 if __name__ == "__main__":
