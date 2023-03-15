@@ -1,11 +1,11 @@
 main:
-  COMPONENTS_REPOSITORY: 'https://github.com/vitorbeltrao/census-income-forecast#components'
-  PROJECT_NAME: rental-prices-ny
-  EXPERIMENT_NAME: development
-  STEPS: all
+  components_repository: 'https://github.com/vitorbeltrao/census-income-forecast#components'
+  project_name: rental-prices-ny
+  experiment_name: development
+  steps: all
 
 01_upload_raw_data:
-  INPUT_URI : 'https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data'
+  input_uri : 'https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data'
 
 02_transform_raw_data:
   input_artifact: "vitorabdo/census-income-forecast/raw_data:latest"
