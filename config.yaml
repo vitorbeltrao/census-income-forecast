@@ -1,6 +1,6 @@
 main:
   components_repository: 'https://github.com/vitorbeltrao/census-income-forecast#components'
-  project_name: rental-prices-ny
+  project_name: census-income-forecast
   experiment_name: development
   steps: all
 
