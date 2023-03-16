@@ -4,4 +4,4 @@ conda_env: conda.yaml
 entry_points:
   main:
 
-    command: "python transform_raw_data.py"
+    command: "python basic_clean.py"
